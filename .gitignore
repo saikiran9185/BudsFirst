@@ -1,0 +1,7 @@
+build/
+*/build/
+.gradle/
+.kotlin/
+local.properties
+.DS_Store
+*.apk

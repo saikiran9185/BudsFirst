@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <queries>
+        <package android:name="moe.shizuku.privileged.api" />
+        <package android:name="com.android.bluetooth" />
+        <package android:name="com.google.android.bluetooth" />
+    </queries>
+
+    <application
+        android:name=".BudsFirstApp"
+        android:icon="@mipmap/ic_launcher"
+        android:label="BudsFirst"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.BudsFirst">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".GuardTile"
+            android:exported="true"
+            android:icon="@drawable/ic_tile"
+            android:label="BudsFirst"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <!-- The guard's (shell user) door into the app: Bluetooth profile binders and event forwarding. -->
+        <provider
+            android:name=".RelayProvider"
+            android:authorities="dev.saikiran.budsfirst.relay"
+            android:exported="true" />
+
+        <!-- Shizuku hands its binder to the app through this provider, which also wakes the app
+             when Shizuku starts, so the guard comes back after a restart. -->
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:enabled="true"
+            android:exported="true"
+            android:multiprocess="false"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    </application>
+</manifest>
